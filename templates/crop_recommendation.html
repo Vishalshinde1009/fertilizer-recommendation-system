@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div class="container">
+        <span class="eyebrow">Crop Recommendation System</span>
+        <h1>Find the best crop for your field</h1>
+        <p>Use soil nutrients, weather, temperature, humidity, and rainfall to recommend a crop with machine learning.</p>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <form class="glass-panel needs-validation" method="post" novalidate>
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+                        <h2 class="h4 mb-0">Soil and climate inputs</h2>
+                        <span class="model-badge">RF Accuracy {{ (crop_model_accuracy * 100) | round(1) }}%</span>
+                    </div>
+
+                    <div class="row g-3">
+                        {% for field, label, min, max in [
+                            ("Nitrogen", "Nitrogen (N)", 0, 200),
+                            ("Phosphorus", "Phosphorus (P)", 0, 200),
+                            ("Potassium", "Potassium (K)", 0, 200),
+                            ("Temperature", "Temperature (C)", -5, 60),
+                            ("Humidity", "Humidity (%)", 0, 100),
+                            ("Rainfall", "Rainfall (mm)", 0, 400)
+                        ] %}
+                        <div class="col-md-6">
+                            <label class="form-label" for="{{ field }}">{{ label }}</label>
+                            <input class="form-control form-control-lg" type="number" step="0.1" min="{{ min }}" max="{{ max }}" id="{{ field }}" name="{{ field }}" required>
+                            <div class="invalid-feedback">Please enter {{ label }}.</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <button class="btn btn-success btn-lg animated-btn mt-4" type="submit">
+                        <i class="fa-solid fa-wheat-awn me-2"></i>Recommend Crop
+                    </button>
+                    <button class="btn btn-outline-secondary btn-lg mt-4 ms-sm-2" type="reset">
+                        <i class="fa-solid fa-rotate-left me-2"></i>Reset
+                    </button>
+                </form>
+            </div>
+
+            <div class="col-lg-5">
+                {% if crop_result %}
+                <div class="crop-result-card reveal-card">
+                    <span class="eyebrow green">Best Crop</span>
+                    <h2>{{ crop_result["crop"] }}</h2>
+                    <div class="confidence-ring small-ring" style="--confidence: {{ crop_result['confidence'] }};">
+                        <span>{{ crop_result["confidence"] }}%</span>
+                    </div>
+                    <p>{{ crop_result["reason"] }}</p>
+                    <div class="crop-advice">
+                        <strong>Next step:</strong> Review local market demand, seed availability, and irrigation plan before sowing.
+                    </div>
+                </div>
+                {% else %}
+                <div class="side-panel h-100">
+                    <h2 class="h5">How Crop AI Works</h2>
+                    <p>Random Forest classification compares your field values with crop suitability patterns and returns the best matching crop.</p>
+                    <ul class="check-list">
+                        <li>Uses NPK nutrient levels</li>
+                        <li>Uses temperature and humidity</li>
+                        <li>Uses rainfall for seasonal suitability</li>
+                        <li>Saves recent crop recommendations</li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="glass-panel mt-4">
+            <h2 class="h4 mb-3">Recent Crop Recommendations</h2>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Crop</th>
+                            <th>Confidence</th>
+                            <th>Temperature</th>
+                            <th>Rainfall</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in recent_crops %}
+                        <tr>
+                            <td><span class="badge text-bg-success">{{ row["recommended_crop"] }}</span></td>
+                            <td>{{ row["confidence"] }}%</td>
+                            <td>{{ row["temperature"] }} C</td>
+                            <td>{{ row["rainfall"] }} mm</td>
+                            <td>{{ row["created_at"] }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="5" class="text-center text-muted">No crop recommendations yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

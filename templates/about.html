@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div class="container">
+        <span class="eyebrow">About The Project</span>
+        <h1>AI plus agriculture for practical farm decisions</h1>
+        <p>This platform combines soil chemistry, crop requirements, weather values, and machine learning to recommend suitable fertilizer.</p>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4 align-items-stretch">
+            <div class="col-lg-6">
+                <div class="glass-panel h-100">
+                    <h2>Project Details</h2>
+                    <p>The Fertilizer Recommendation System is a full-stack Flask application that uses a Random Forest Classifier trained on crop, soil, and nutrient data. It stores prediction history in SQLite and provides PDF reports for field reference.</p>
+                    <p class="mb-0">It is designed as a GitHub-ready, deployment-friendly project for students, farmers, agritech demos, and smart agriculture learning.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="glass-panel h-100">
+                    <h2>Benefits For Farmers</h2>
+                    <ul class="check-list">
+                        <li>Improves fertilizer planning based on crop and soil conditions.</li>
+                        <li>Reduces guesswork and supports data-driven nutrient decisions.</li>
+                        <li>Provides clear usage guidance and soil improvement tips.</li>
+                        <li>Tracks historical recommendations through a dashboard.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="tech-stack mt-5">
+            {% for item in ["Python Flask", "Scikit-learn", "Random Forest", "SQLite", "Bootstrap 5", "Chart.js", "ReportLab", "OpenWeather API"] %}
+            <span>{{ item }}</span>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

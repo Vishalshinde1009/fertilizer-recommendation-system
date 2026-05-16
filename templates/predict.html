@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div class="container">
+        <span class="eyebrow">Fertilizer Prediction</span>
+        <h1>Get a smart fertilizer recommendation</h1>
+        <p>Enter crop and soil values manually, use voice input, or auto-fill weather values from a live weather provider.</p>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <form class="glass-panel needs-validation" method="post" action="{{ url_for('predict') }}" novalidate id="predictionForm">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+                        <h2 class="h4 mb-0">Soil and crop details</h2>
+                        <button class="btn btn-outline-success btn-sm rounded-pill" type="button" id="voiceButton">
+                            <i class="fa-solid fa-microphone me-2"></i>Voice Input
+                        </button>
+                    </div>
+
+                    <div class="row g-3">
+                        {% for field, label, min, max in [
+                            ("Nitrogen", "Nitrogen (N)", 0, 200),
+                            ("Phosphorus", "Phosphorus (P)", 0, 200),
+                            ("Potassium", "Potassium (K)", 0, 200),
+                            ("Temperature", "Temperature (C)", -5, 60),
+                            ("Humidity", "Humidity (%)", 0, 100),
+                            ("Moisture", "Moisture (%)", 0, 100)
+                        ] %}
+                        <div class="col-md-6">
+                            <label class="form-label" for="{{ field }}">{{ label }}</label>
+                            <input class="form-control form-control-lg" type="number" step="0.1" min="{{ min }}" max="{{ max }}" id="{{ field }}" name="{{ field }}" required>
+                            <div class="invalid-feedback">Please enter a valid {{ label }} value.</div>
+                        </div>
+                        {% endfor %}
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="Soil_Type">Soil Type</label>
+                            <select class="form-select form-select-lg" id="Soil_Type" name="Soil_Type" required>
+                                <option value="">Choose soil type</option>
+                                {% for soil in soil_types %}
+                                <option value="{{ soil }}">{{ soil }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">Please select soil type.</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="Crop_Type">Crop Type</label>
+                            <select class="form-select form-select-lg" id="Crop_Type" name="Crop_Type" required>
+                                <option value="">Choose crop type</option>
+                                {% for crop in crop_types %}
+                                <option value="{{ crop }}">{{ crop }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">Please select crop type.</div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 mt-4">
+                        <button class="btn btn-success btn-lg animated-btn" type="submit" id="predictButton">
+                            <i class="fa-solid fa-seedling me-2"></i>Predict
+                        </button>
+                        <button class="btn btn-outline-secondary btn-lg" type="reset">
+                            <i class="fa-solid fa-rotate-left me-2"></i>Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="side-panel mb-4">
+                    <h2 class="h5">Weather Autofill</h2>
+                    <p class="small text-muted">Enter any city worldwide to fetch temperature and humidity automatically. For duplicate city names, use City, Country.</p>
+                    <div class="input-group">
+                        <input class="form-control" id="weatherCity" list="citySuggestions" placeholder="e.g. Pune or London, UK">
+                        <button class="btn btn-success" id="weatherButton" type="button"><i class="fa-solid fa-cloud-sun"></i></button>
+                    </div>
+                    <datalist id="citySuggestions">
+                        {% for city in ["Pune", "Mumbai", "Delhi", "Nagpur", "Nashik", "Bengaluru", "Hyderabad", "Chennai", "Kolkata", "Ahmedabad", "London, UK", "New York, US", "Tokyo, Japan", "Dubai, UAE", "Sydney, Australia"] %}
+                        <option value="{{ city }}"></option>
+                        {% endfor %}
+                    </datalist>
+                    <div class="quick-cities" aria-label="Popular city shortcuts">
+                        {% for city in ["Pune", "Mumbai", "Delhi", "Nagpur"] %}
+                        <button class="quick-city" type="button" data-city="{{ city }}">{{ city }}</button>
+                        {% endfor %}
+                    </div>
+                    <div class="small mt-2" id="weatherMessage"></div>
+                </div>
+                <div class="side-panel">
+                    <h2 class="h5">Voice Format</h2>
+                    <p class="small text-muted mb-0">Try saying: nitrogen 80 phosphorus 45 potassium 40 temperature 28 humidity 70 moisture 50.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div class="container">
+        <span class="eyebrow">Recommendation Result</span>
+        <h1>{{ prediction["fertilizer_name"] }} is recommended</h1>
+        <p>Model confidence: {{ prediction["confidence"] }}%</p>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        <div class="result-card main-result reveal-card">
+            <div>
+                <span class="eyebrow green">Best Fertilizer</span>
+                <h2>{{ prediction["fertilizer_name"] }}</h2>
+                <p class="mb-0">Recommended for {{ prediction["crop_type"] }} in {{ prediction["soil_type"] }} soil.</p>
+            </div>
+            <div class="confidence-ring" style="--confidence: {{ prediction['confidence'] }};">
+                <span>{{ prediction["confidence"] }}%</span>
+            </div>
+        </div>
+
+        <div class="row g-4 mt-2">
+            <div class="col-md-4">
+                <div class="advice-card reveal-card">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <h3>Why recommended</h3>
+                    <p>{{ guide["reason"] }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="advice-card reveal-card">
+                    <i class="fa-solid fa-hand-holding-droplet"></i>
+                    <h3>Soil improvement tips</h3>
+                    <p>{{ guide["tips"] }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="advice-card reveal-card">
+                    <i class="fa-solid fa-list-check"></i>
+                    <h3>Usage instructions</h3>
+                    <p>{{ guide["usage"] }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="irrigation-panel reveal-card mt-4">
+            <div class="irrigation-icon">
+                <i class="fa-solid fa-droplet"></i>
+            </div>
+            <div class="irrigation-content">
+                <span class="eyebrow green">Smart Irrigation Recommendation</span>
+                <h2>{{ irrigation["level"] }} Irrigation Required</h2>
+                <p>{{ irrigation["reason"] }}</p>
+                <div class="irrigation-meta">
+                    <span><i class="fa-solid fa-gauge-high"></i> Moisture: {{ prediction["moisture"] }}%</span>
+                    <span><i class="fa-solid fa-temperature-half"></i> Temperature: {{ prediction["temperature"] }} C</span>
+                    <span><i class="fa-solid fa-cloud"></i> Humidity: {{ prediction["humidity"] }}%</span>
+                    <span><i class="fa-solid fa-wheat-awn"></i> Crop: {{ prediction["crop_type"] }}</span>
+                </div>
+                <div class="irrigation-schedule">
+                    <strong>Recommended action:</strong> {{ irrigation["schedule"] }}
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a class="btn btn-success btn-lg animated-btn" href="{{ url_for('download_report', history_id=prediction['id']) }}">
+                <i class="fa-solid fa-file-pdf me-2"></i>Download Report
+            </a>
+            <a class="btn btn-outline-success btn-lg ms-sm-2 mt-2 mt-sm-0" href="{{ url_for('predict') }}">New Prediction</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

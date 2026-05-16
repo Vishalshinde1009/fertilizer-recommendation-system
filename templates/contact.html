@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div class="container">
+        <span class="eyebrow">Contact</span>
+        <h1>Let us build smarter farming together</h1>
+        <p>Send your questions, feedback, or collaboration ideas.</p>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <form class="glass-panel needs-validation" method="post" novalidate>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label" for="name">Name</label>
+                            <input class="form-control form-control-lg" id="name" name="name" required>
+                            <div class="invalid-feedback">Please enter your name.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="email">Email</label>
+                            <input class="form-control form-control-lg" type="email" id="email" name="email" required>
+                            <div class="invalid-feedback">Please enter a valid email.</div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="message">Message</label>
+                            <textarea class="form-control form-control-lg" id="message" name="message" rows="5" required></textarea>
+                            <div class="invalid-feedback">Please enter a message.</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-success btn-lg animated-btn mt-4" type="submit">
+                        <i class="fa-solid fa-paper-plane me-2"></i>Send Message
+                    </button>
+                </form>
+            </div>
+            <div class="col-lg-5">
+                <div class="side-panel h-100">
+                    <h2>Connect With Us</h2>
+                    <p>FertiAI brings AI recommendations, farm dashboards, and practical advisory reports into one simple platform.</p>
+                    <div class="contact-list">
+                        <span><i class="fa-solid fa-envelope"></i> support@fertiai.example</span>
+                        <span><i class="fa-solid fa-location-dot"></i> Pune, Maharashtra</span>
+                        <span><i class="fa-solid fa-phone"></i> +91 98765 43210</span>
+                    </div>
+                    <div class="mt-4">
+                        <a class="social-link light" href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a class="social-link light" href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a class="social-link light" href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

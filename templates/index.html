@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero-section animated-hero" style="background-image: linear-gradient(90deg, rgba(8, 50, 28, .88), rgba(8, 88, 48, .42)), url('{{ url_for('static', filename='images/hero-farm.png') }}');">
+    <video class="hero-video" autoplay muted loop playsinline poster="{{ url_for('static', filename='images/hero-farm.png') }}" aria-hidden="true">
+        <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" type="video/webm">
+        <source src="https://cdn.coverr.co/videos/coverr-farming-fields-4386/1080p.mp4" type="video/mp4">
+    </video>
+    <div class="hero-video-fallback"></div>
+    <div class="floating-farm-icons" aria-hidden="true">
+        <i class="fa-solid fa-seedling icon-one"></i>
+        <i class="fa-solid fa-wheat-awn icon-two"></i>
+        <i class="fa-solid fa-droplet icon-three"></i>
+        <i class="fa-solid fa-cloud-sun icon-four"></i>
+    </div>
+    <div class="container">
+        <div class="row align-items-center min-vh-100 pt-5">
+            <div class="col-lg-7 hero-copy">
+                <span class="eyebrow">AI Smart Farming Platform</span>
+                <h1 data-i18n="hero_title">Smart AI Fertilizer Recommendation System</h1>
+                <p data-i18n="hero_text">Analyze soil nutrients, weather, crop type, and moisture to recommend the best fertilizer with machine learning.</p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{{ url_for('predict') }}" class="btn btn-light btn-lg animated-btn">
+                        <i class="fa-solid fa-wand-magic-sparkles me-2"></i><span data-i18n="get_recommendation">Get Recommendation</span>
+                    </a>
+                    <a href="{{ url_for('crop_recommendation') }}" class="btn btn-success btn-lg animated-btn">
+                        <i class="fa-solid fa-wheat-awn me-2"></i>Crop AI
+                    </a>
+                    <a href="{{ url_for('about') }}" class="btn btn-outline-light btn-lg animated-btn">
+                        <i class="fa-solid fa-circle-info me-2"></i><span data-i18n="learn_more">Learn More</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad scroll-reveal">
+    <div class="container">
+        <div class="section-heading text-center">
+            <span class="eyebrow green">Platform Features</span>
+            <h2>Real-time intelligence for better crop nutrition</h2>
+        </div>
+        <div class="row g-4">
+            {% set features = [
+                ("fa-brain", "AI Prediction", "Random Forest powered recommendations using soil, crop, and weather inputs.", "Confidence scoring, saved history, fertilizer reasoning, and downloadable PDF reports."),
+                ("fa-vial-circle-check", "Soil Analysis", "NPK, moisture, humidity, and temperature values interpreted in one flow.", "Detect nutrient gaps and match fertilizer choices to soil and crop conditions."),
+                ("fa-tractor", "Smart Farming", "Decision support designed for practical field-level fertilizer planning.", "Weather autofill, voice input, and a dashboard make recommendations easier to use in the field."),
+                ("fa-heart-pulse", "Crop Health", "Usage instructions and soil tips help improve long-term productivity.", "Clear guidance supports root growth, nutrient balance, water use, and soil resilience."),
+                ("fa-cloud-sun-rain", "Weather-Aware Advice", "Temperature and humidity can be fetched from OpenWeather for faster form filling.", "Use local weather signals alongside soil values for a more complete recommendation."),
+                ("fa-chart-column", "Prediction Dashboard", "Charts summarize fertilizer trends and recent farmer recommendations.", "SQLite history helps compare crop choices, soil types, confidence, and fertilizer usage."),
+                ("fa-file-pdf", "PDF Farm Reports", "Each recommendation can be exported as a clean professional advisory report.", "Reports include inputs, fertilizer name, confidence, reason, soil tips, and usage instructions."),
+                ("fa-language", "Farmer Friendly Access", "English and Marathi support makes the platform easier to understand locally.", "Voice input reduces typing effort for nutrient values during quick field checks."),
+                ("fa-wheat-awn", "Crop Recommendation", "A second ML model recommends suitable crops using NPK, weather, temperature, and rainfall.", "Useful before sowing decisions when farmers want to compare crop suitability.")
+            ] %}
+            {% for icon, title, text, detail in features %}
+            <div class="col-md-6 col-xl-3">
+                <div class="feature-card reveal-card interactive-card">
+                    <i class="fa-solid {{ icon }}"></i>
+                    <h3>{{ title }}</h3>
+                    <p>{{ text }}</p>
+                    <span>{{ detail }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="intelligence-section section-pad scroll-reveal">
+    <div class="container">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-5">
+                <span class="eyebrow green">Field Intelligence</span>
+                <h2>More than a fertilizer name</h2>
+                <p>The system turns raw field values into practical guidance farmers can act on immediately. Every prediction explains the recommendation, captures the input data, and connects fertilizer use with better soil and crop outcomes.</p>
+                <a href="{{ url_for('predict') }}" class="btn btn-success btn-lg animated-btn">
+                    <i class="fa-solid fa-flask-vial me-2"></i>Analyze Soil Now
+                </a>
+            </div>
+            <div class="col-lg-7">
+                <div class="insight-grid">
+                    <div class="insight-tile interactive-card">
+                        <strong>01</strong>
+                        <h3>AI Recommendation Engine</h3>
+                        <p>Uses N, P, K, temperature, humidity, moisture, soil type, and crop type to classify the most suitable fertilizer.</p>
+                    </div>
+                    <div class="insight-tile interactive-card">
+                        <strong>02</strong>
+                        <h3>Nutrient Balance Check</h3>
+                        <p>Compares key nutrient levels with crop needs so fertilizer decisions are linked to soil condition instead of guesswork.</p>
+                    </div>
+                    <div class="insight-tile interactive-card">
+                        <strong>03</strong>
+                        <h3>Smart Farm Records</h3>
+                        <p>Stores prediction history in SQLite and visualizes recommendation patterns using dashboard charts.</p>
+                    </div>
+                    <div class="insight-tile interactive-card">
+                        <strong>04</strong>
+                        <h3>Crop Health Guidance</h3>
+                        <p>Provides usage instructions and improvement tips that support roots, leaves, moisture control, and long-term soil quality.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="stats-band scroll-reveal">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-md-4"><strong>8+</strong><span>Soil and crop signals</span></div>
+            <div class="col-md-4"><strong>RF</strong><span>Machine learning classifier</span></div>
+            <div class="col-md-4"><strong>PDF</strong><span>Downloadable advisory reports</span></div>
+        </div>
+    </div>
+</section>
+{% endblock %}

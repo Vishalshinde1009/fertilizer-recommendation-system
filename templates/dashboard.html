@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-hero compact-hero">
+    <div class="container">
+        <span class="eyebrow">Dashboard</span>
+        <h1>Prediction statistics</h1>
+        <p>Review fertilizer trends and recent recommendations stored in SQLite.</p>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="metric-card">
+                    <span>Total Predictions</span>
+                    <strong>{{ total }}</strong>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="glass-panel">
+                    <canvas id="fertilizerChart" height="120"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-panel mt-4">
+            <h2 class="h4 mb-3">Recent History</h2>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Crop</th>
+                            <th>Soil</th>
+                            <th>Fertilizer</th>
+                            <th>Irrigation</th>
+                            <th>Confidence</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in recent_rows %}
+                        <tr>
+                            <td>{{ row["crop_type"] }}</td>
+                            <td>{{ row["soil_type"] }}</td>
+                            <td><span class="badge text-bg-success">{{ row["fertilizer_name"] }}</span></td>
+                            <td><span class="badge text-bg-info">{{ row["irrigation_level"] or "Calculated" }}</span></td>
+                            <td>{{ row["confidence"] }}%</td>
+                            <td>{{ row["created_at"] }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="6" class="text-center text-muted">No predictions yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Chart data is rendered from Flask into safe JSON arrays.
+    const fertilizerLabels = {{ fertilizer_rows | map(attribute='fertilizer_name') | list | tojson }};
+    const fertilizerCounts = {{ fertilizer_rows | map(attribute='count') | list | tojson }};
+    window.fertilizerLabels = fertilizerLabels;
+    window.fertilizerCounts = fertilizerCounts;
+</script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
